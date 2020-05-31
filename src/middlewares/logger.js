@@ -30,8 +30,8 @@ const configureRequestLogger = function (app) {
 
 const configureErrorLogger = function (app) {
   function logError (err, req, res, next) {
-    logger.error(err)
-    next()
+    logger.error(err.message)
+    next(err)
   }
   app.use(logError)
 }

@@ -1,6 +1,6 @@
 const express = require('express')
 const { configureRequestLogger, configureErrorLogger, logger } = require('./middlewares/logger')
-const { configureMiddlewares } = require('./middlewares/general')
+const { configureMiddlewares, configureErrorHandler } = require('./middlewares/general')
 const { configureRoutes } = require('./middlewares/routes')
 const { configureSwagger } = require('./middlewares/swagger')
 
@@ -11,6 +11,7 @@ configureMiddlewares(app)
 configureRoutes(app)
 configureSwagger(app)
 configureErrorLogger(app)
+configureErrorHandler(app)
 
 logger.info('default API initialized.')
 

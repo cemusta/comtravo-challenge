@@ -1,12 +1,12 @@
-const superagent = require('superagent')
+const config = require('../config')
 const { logger } = require('../middlewares/logger')
+const dataService = require('./dataService')
 
 const consolidate = async () => {
   try {
-    const x = source1()
-    const y = source2()
+    const res = await getFlights()
 
-    const res = Promise.raceAll([x, y], 950, null)
+    // do the consolidation here
 
     return res
   } catch (err) {
@@ -17,97 +17,33 @@ const consolidate = async () => {
   }
 }
 
-const source1 = async () => {
+const getFlights = async () => {
   try {
-    const request = superagent.get('https://discovery-stub.comtravo.com/source1')
-      .set('user-agent', 'comtravo-comsumer')
+    const first = dataService.getData('https://discovery-stub.comtravo.com/source1')
+    const second = dataService.getData('https://discovery-stub.comtravo.com/source2', true)
 
-    const res = await request
+    const results = Promise.raceAll([first, second], config.timeout)
 
-    if (res.status !== 200) {
-      logger.info('handle status', res)
-      throw new Error('handle status')
-    }
-
-    const { text } = res
-
-    const { flights } = JSON.parse(text)
-
-    logger.info('source1 returned')
-
-    return flights
+    return results
   } catch (err) {
-    if (err.status === 403) {
-      logger.error('rate limit reached.')
-      return null
-    }
-
-    if (err.status === 401) {
-      logger.error('auth failed.')
-      return null
-    }
-
-    if (err.status >= 500) {
-      logger.error('server error.')
-      return null
-    }
+    logger.error(`getFlights error: ${err.message}`)
 
     // throw other unhandled errors
     throw err
   }
 }
 
-const source2 = async () => {
-  try {
-    const request = superagent.get('https://discovery-stub.comtravo.com/source2')
-      .set('user-agent', 'comtravo-comsumer')
-
-    if (process.env.API_USER && process.env.API_PASS) {
-      request.auth(process.env.API_USER, process.env.API_PASS)
-    }
-
-    const res = await request
-
-    if (res.status !== 200) {
-      logger.info('handle status', res)
-      throw new Error('handle status')
-    }
-
-    const { text } = res
-
-    const { flights } = JSON.parse(text)
-
-    logger.info('source2 returned')
-
-    return flights
-  } catch (err) {
-    if (err.status === 403) {
-      logger.error('rate limit reached.')
-      return null
-    }
-
-    if (err.status === 401) {
-      logger.error('auth failed.')
-      return null
-    }
-
-    if (err.status >= 500) {
-      logger.error('server error.')
-      return null
-    }
-
-    // throw other unhandled errors
-    throw err
-  }
-}
-
-Promise.raceAll = function (promises, timeoutTime, timeoutVal) {
+Promise.raceAll = function (promises, timeoutTime) {
   return Promise.all(promises.map(p => {
-    return Promise.race([p, new Promise(resolve => setTimeout(() => resolve(timeoutVal), timeoutTime))])
+    const value = Promise.race([p, new Promise(resolve => setTimeout(() => resolve(null), timeoutTime))])
+    if (!value) {
+      logger.warn(`${p} timeout`)
+    }
+    return value
   }))
 }
 
 module.exports = {
   consolidate,
-  source1
+  getFlights
 }

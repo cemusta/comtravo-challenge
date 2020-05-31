@@ -2,12 +2,12 @@
 const flightService = require('../services/flightService')
 
 // get: /api/flights/
-exports.get = async (req, res) => {
+exports.get = async (req, res, next) => {
   try {
     const flights = await flightService.consolidate()
 
     return res.status(200).json({ flights })
-  } catch (ex) {
-    return res.status(500).json(ex.message)
+  } catch (error) {
+    next(error)
   }
 }
