@@ -19,7 +19,7 @@ const configureSwagger = function (app) {
       schemes: [config.server_scheme],
       tags: [
         {
-          name: 'flight',
+          name: 'flights',
           description: 'Flight consolidate endpoints'
         }
       ]

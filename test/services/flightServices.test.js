@@ -5,7 +5,7 @@ beforeEach(() => {
 const mockText = JSON.stringify(require('./mock/response.json'))
 
 describe('Testing flight service', () => {
-  describe('consolidate()', () => {
+  describe('source1()', () => {
     it('should return flights list from comtravo api', async () => {
       jest.mock('superagent', () => ({
         get: jest.fn(() => {}).mockReturnThis(),
@@ -16,7 +16,7 @@ describe('Testing flight service', () => {
       }))
       const flightService = require('../../src/services/flightService')
 
-      const result = await flightService.consolidate()
+      const result = await flightService.source1()
       expect(result.length).toBe(14)
     })
   })
