@@ -1,14 +1,33 @@
-const config = require('../config')
 const { logger } = require('../middlewares/logger')
 const dataService = require('./dataService')
 
 const consolidate = async () => {
   try {
-    const res = await getFlights()
+    const results = await getFlights()
 
-    // do the consolidation here
+    const flightStrings = []
+    const flights = []
+    let duplicateCount = 0
 
-    return res
+    for (const result of results) {
+      if (!result) { continue }
+
+      for (const flight of result) {
+        const str = JSON.stringify(flight)
+        if (flightStrings.includes(str)) {
+          duplicateCount++
+        } else {
+          flightStrings.push(str)
+          flights.push(flight)
+        }
+      }
+    }
+
+    if (duplicateCount > 0) {
+      logger.warn(`removed ${duplicateCount} duplicate`)
+    }
+
+    return flights
   } catch (err) {
     logger.error(`consolidate error: ${err.message}`)
 
@@ -22,7 +41,8 @@ const getFlights = async () => {
     const first = dataService.getData('https://discovery-stub.comtravo.com/source1')
     const second = dataService.getData('https://discovery-stub.comtravo.com/source2', true)
 
-    const results = Promise.raceAll([first, second], config.timeout)
+    // const results = Promise.raceAll([first, second], config.timeout)
+    const results = await Promise.all([first, second])
 
     return results
   } catch (err) {
@@ -31,16 +51,6 @@ const getFlights = async () => {
     // throw other unhandled errors
     throw err
   }
-}
-
-Promise.raceAll = function (promises, timeoutTime) {
-  return Promise.all(promises.map(p => {
-    const value = Promise.race([p, new Promise(resolve => setTimeout(() => resolve(null), timeoutTime))])
-    if (!value) {
-      logger.warn(`${p} timeout`)
-    }
-    return value
-  }))
 }
 
 module.exports = {

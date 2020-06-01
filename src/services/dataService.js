@@ -1,3 +1,4 @@
+const config = require('../config')
 const superagent = require('superagent')
 const { logger } = require('../middlewares/logger')
 
@@ -10,7 +11,12 @@ const getData = async (url, auth = false) => {
       request.auth(process.env.API_USER, process.env.API_PASS)
     }
 
-    const res = await request
+    const res = await Promise.race([request, new Promise(resolve => setTimeout(() => resolve(null), config.timeout))])
+
+    if (!res) {
+      logger.warn(`${url} timeouted (limit: ${config.timeout}ms).`)
+      return null
+    }
 
     if (res.status !== 200) {
       logger.info('handle status', res)
@@ -21,30 +27,31 @@ const getData = async (url, auth = false) => {
 
     const { flights } = JSON.parse(text)
 
-    logger.info(`${url} finished.`)
+    logger.info(`${url} returned (${flights.length}) items.`)
 
     return flights
   } catch (err) {
     if (err.status === 401) {
-      logger.error('auth failed.')
+      logger.error(`${url} returned auth fail (401).`)
       return null
     }
 
     if (err.status === 403) {
-      logger.error('rate limit reached.')
+      logger.error(`${url} returned rate limit error (403).`)
       return null
     }
 
     if (err.status === 404) {
-      logger.error('data source not found.')
+      logger.error(`${url} returned not found (404).`)
       return null
     }
 
     if (err.status >= 500) {
-      logger.error('server error.')
+      logger.error(`${url} returned server error (500).`)
       return null
     }
 
+    logger.error(`${url} returned generic error, rethrowing.`)
     // throw other unhandled errors
     throw err
   }

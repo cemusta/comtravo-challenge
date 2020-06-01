@@ -9,7 +9,7 @@ This repository contains a small nodejs/express app... TODO: detail
 
 Heres the link for deployed example working on google cloud app engine standard
 
-> https://comtravo-challenge.appspot.com
+> https://comtravo-challenge-278911.appspot.com
 
 
 ## How to run
@@ -41,4 +41,6 @@ npm run lint
 
 ### list of possible improvements for future
 
-TODO: add more details.
+ - Model validations
+ - More test cases
+ - Automated code coverage and static analyzer.

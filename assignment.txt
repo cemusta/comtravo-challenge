@@ -15,5 +15,5 @@ The URL: https://discovery-stub.comtravo.com/
 API Specs: https://discovery-stub.comtravo.com/api-docs/
 Basic authentication credentials:
     Username: ct_interviewee
-    Password: supersecret
+    Password: *******
 

@@ -22,7 +22,7 @@
     "comtravo",
     "wrapper"
   ],
-  "author": "",
+  "author": "Cem Usta",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
