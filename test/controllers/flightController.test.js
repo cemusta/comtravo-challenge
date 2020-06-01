@@ -6,8 +6,6 @@ beforeEach(() => {
 it('should return flights array', async function (done) {
   jest.mock('../../src/services/flightService', () => ({
     consolidateFlights: jest.fn(async () => {
-      // return { status: 200, text: mockText }
-      // return new Promise(resolve => setTimeout(() => resolve({ flights: [] }), 0))
       return []
     })
   }))

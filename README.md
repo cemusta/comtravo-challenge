@@ -70,4 +70,4 @@ npm run lint
 ### list of possible improvements for future
 
  - Model validations
- - More test cases
+ - Making data services more moduler

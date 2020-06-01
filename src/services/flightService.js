@@ -38,10 +38,12 @@ const consolidateFlights = async () => {
 
 const getFlights = async () => {
   try {
-    const first = dataService.getData('https://discovery-stub.comtravo.com/source1')
-    const second = dataService.getData('https://discovery-stub.comtravo.com/source2', true)
+    const requests = [
+      dataService.getData('https://discovery-stub.comtravo.com/source1'),
+      dataService.getData('https://discovery-stub.comtravo.com/source2', true)
+    ]
 
-    const results = await Promise.all([first, second])
+    const results = await Promise.all(requests)
 
     return results
   } catch (err) {
