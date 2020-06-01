@@ -1,7 +1,7 @@
 const { logger } = require('../middlewares/logger')
 const dataService = require('./dataService')
 
-const consolidate = async () => {
+const consolidateFlights = async () => {
   try {
     const results = await getFlights()
 
@@ -41,7 +41,6 @@ const getFlights = async () => {
     const first = dataService.getData('https://discovery-stub.comtravo.com/source1')
     const second = dataService.getData('https://discovery-stub.comtravo.com/source2', true)
 
-    // const results = Promise.raceAll([first, second], config.timeout)
     const results = await Promise.all([first, second])
 
     return results
@@ -54,6 +53,6 @@ const getFlights = async () => {
 }
 
 module.exports = {
-  consolidate,
+  consolidateFlights,
   getFlights
 }

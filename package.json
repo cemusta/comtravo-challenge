@@ -10,7 +10,7 @@
     "test:logs": "jest",
     "test:changes": "jest -o",
     "lint": "eslint .",
-    "coverage": "jest --collectCoverage",
+    "coverage": "cross-env SILENT_LOGS=true jest --collectCoverage",
     "validate": "npm-run-all lint test:changes",
     "codecov": "codecov"
   },

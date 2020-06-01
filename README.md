@@ -1,5 +1,6 @@
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/cemusta/comtravo-challenge/blob/master/LICENSE)
 [![GitHub actions](https://github.com/cemusta/comtravo-challenge/workflows/Node.js%20CI/badge.svg)](https://github.com/cemusta/comtravo-challenge/actions)
+[![CodeFactor](https://www.codefactor.io/repository/github/cemusta/comtravo-challenge/badge)](https://www.codefactor.io/repository/github/cemusta/comtravo-challenge)
 
 # Contro Challenge - consuming and merging 2 api's with a timeout
 
@@ -43,4 +44,3 @@ npm run lint
 
  - Model validations
  - More test cases
- - Automated code coverage and static analyzer.
