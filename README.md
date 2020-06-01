@@ -3,7 +3,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/cemusta/comtravo-challenge/badge)](https://www.codefactor.io/repository/github/cemusta/comtravo-challenge)
 [![codecov](https://codecov.io/gh/cemusta/comtravo-challenge/branch/master/graph/badge.svg)](https://codecov.io/gh/cemusta/comtravo-challenge)
 
-# Contro Challenge
+# Comtravo Challenge
 
 This repository contains a small nodejs/express app to tackle Comtravo's coding challenge below. Main challenge was asyncroniously consuming multiple mock 3rd party api's, merging results within a timeout limit.
 
