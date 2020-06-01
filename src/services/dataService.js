@@ -7,8 +7,8 @@ const getData = async (url, auth = false) => {
     const request = superagent.get(url)
       .set('user-agent', 'comtravo-comsumer')
 
-    if (auth && process.env.API_USER && process.env.API_PASS) {
-      request.auth(process.env.API_USER, process.env.API_PASS)
+    if (auth) {
+      request.auth(config.username, config.password)
     }
 
     const res = await Promise.race([request, new Promise(resolve => setTimeout(() => resolve(null), config.timeout))])

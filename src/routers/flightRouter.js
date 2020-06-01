@@ -9,14 +9,12 @@ const controller = require('../controllers/flightController')
  *   get:
  *     tags:
  *       - flights
- *     description: endpoint for listing consolidated flights records ( should return within 1 seconds )
+ *     description: endpoint for listing consolidated flights records ( should return within 1 seconds ), returns null if all 3rd party providers fail.
  *     produces:
  *       - application/json
  *     responses:
  *       200:
- *         description: list all repositories
- *       403:
- *         description: illegal query parameters
+ *         description: return consolidated flights
  *       500:
  *         description: internal server error
  */

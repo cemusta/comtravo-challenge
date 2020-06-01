@@ -4,7 +4,7 @@ const flightService = require('../services/flightService')
 // get: /api/flights/
 exports.get = async (req, res, next) => {
   try {
-    const flights = await flightService.consolidate()
+    const flights = await flightService.consolidateFlights()
 
     return res.status(200).json({ flights })
   } catch (error) {

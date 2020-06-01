@@ -14,8 +14,15 @@
 .git
 .github
 .vscode
-node_modules
 coverage
+node_modules
 test
 
+.env
+.env.template
+.gitattributes
 .gitignore
+assignment.txt
+jest.config.jest
+LICENSE
+README.md
